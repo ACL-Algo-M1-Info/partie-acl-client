@@ -1,0 +1,23 @@
+﻿# Est racine.
+root = true
+
+### POUR TOUS LES FICHIERS ###
+[*]
+
+# Type d'indentation
+indent_style = tab
+
+# Taille d'indentation
+indent_size = 4
+
+# Type de caractère de fin de ligne
+end_of_line = lf
+
+# Charset d'encodage
+charset = utf-8
+
+# Trimming des espaces non nécessaires
+trim_trailing_whitespace = true
+
+# \n en fin de fichier
+insert_final_newline = true
