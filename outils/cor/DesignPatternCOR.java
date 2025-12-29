@@ -1,11 +1,11 @@
-package Outils;
+package outils.cor;
 
 /**
  * Classe représentant un maillon d'une COR
  * @param <R> Type de retour attendu de la COR
  * @param <P> Type de paramètre attendu de la COR
  */
-public abstract class DesignPatternCOR<R, P> implements InterDesignPatternCOR<R,P>{
+public abstract class DesignPatternCOR<R, P> implements InterDesignPatternCOR<R,P> {
 	protected DesignPatternCOR<R, P> suivant;
 	/**
 	 * Valeur de retour de la COR en cas d'erreur (traitement non aboutit malgré le parcours de la totalité de la chaine)

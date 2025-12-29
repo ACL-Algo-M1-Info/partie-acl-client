@@ -1,4 +1,4 @@
-package Outils;
+package outils.cor;
 
 /**
  * Interface descriptive du traitement d'une COR
