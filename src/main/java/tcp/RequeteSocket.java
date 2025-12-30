@@ -5,6 +5,7 @@ package tcp;
 // IMPORTS
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import typesCode.CodeTypeRequete;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -18,20 +19,12 @@ import java.io.StringWriter;
 public class RequeteSocket<T>
 {
 
-    // CONSTANTES
-
-    /** Segment JSON pour le champ du type */
-    public final static String SEGMENT_TYPE = "type";
-
-    /** Segment JSON pour le champ de la data */
-    public final static String SEGMENT_DATA = "data";
-
     // VARIABLES
 
     /**
      * Type de la reqûete reçue
      */
-    public String type;
+    public CodeTypeRequete type;
 
     public T data;
 
@@ -42,7 +35,7 @@ public class RequeteSocket<T>
      * @param type
      * @param data
      */
-    public RequeteSocket(String type, T data)
+    public RequeteSocket(CodeTypeRequete type, T data)
     {
         this.type = type;
         this.data = data;

@@ -1,6 +1,7 @@
 package tcp;
 
 import org.junit.Test;
+import typesCode.CodeTypeRequete;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +12,7 @@ public class RequeteSocketTest
     @Test
     public void testJSON()
     {
-        RequeteSocket<String> requeteSocket = new RequeteSocket<>("test", "RAYMI");
+        RequeteSocket<String> requeteSocket = new RequeteSocket<>(CodeTypeRequete.API, "RAYMI");
 
         try
         {
@@ -26,7 +27,7 @@ public class RequeteSocketTest
         liste.add("RAYMI");
         liste.add("oui oui baguette");
 
-        RequeteSocket<ArrayList<String>> requeteSocket2 = new RequeteSocket<>("test", liste);
+        RequeteSocket<ArrayList<String>> requeteSocket2 = new RequeteSocket<>(CodeTypeRequete.API, liste);
         try
         {
             System.out.println(requeteSocket2);
@@ -38,7 +39,7 @@ public class RequeteSocketTest
         HashMap<String, Integer> map = new HashMap<>();
         map.put("test", 1);
         map.put("oui oui baguette", 2);
-        RequeteSocket<HashMap<String, Integer>> requeteSocket3 = new RequeteSocket<>("test", map);
+        RequeteSocket<HashMap<String, Integer>> requeteSocket3 = new RequeteSocket<>(CodeTypeRequete.API, map);
         try
         {
             System.out.println(requeteSocket3);
