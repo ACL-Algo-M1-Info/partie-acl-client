@@ -16,7 +16,7 @@ import java.io.StringWriter;
  * Classe qui représente une reqûete que l'on veut envoyer au serveur
  * @param <T> la donnée envoyée au serveur
  */
-public class RequeteSocket<T>
+public class RequeteSocket<T> implements SendableObject
 {
 
     // VARIABLES
@@ -28,12 +28,14 @@ public class RequeteSocket<T>
 
     public T data;
 
+    public int idConversation = 0;
+
     // CONSTRUCTEUR
 
     /**
      * Construit une reqûete à envoyer sur le réseau ayant un type et des données
-     * @param type
-     * @param data
+     * @param type le type de la reqûete
+     * @param data les données de la reqûete
      */
     public RequeteSocket(CodeTypeRequete type, T data)
     {
@@ -43,6 +45,7 @@ public class RequeteSocket<T>
 
     // METHODES
 
+    @Override
     public String serializeToJSON() throws IOException
     {
         StringWriter writer = new StringWriter();
@@ -52,6 +55,12 @@ public class RequeteSocket<T>
         mapper.writeValue(writer, this);
 
         return writer.toString();
+    }
+
+    @Override
+    public void setIdConversation(int idConversation)
+    {
+        this.idConversation = idConversation;
     }
 
     @Override

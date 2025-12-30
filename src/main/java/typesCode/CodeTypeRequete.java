@@ -15,7 +15,7 @@ public enum CodeTypeRequete {
     // VARIABLES
 
     /** Représente le code du statut de la réponse */
-    int code;
+    private final int code;
 
     // CONSTRUCTEUR
 

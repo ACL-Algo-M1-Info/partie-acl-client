@@ -20,6 +20,7 @@ public class RequeteSocketTest
         }
         catch (Exception e)
         {
+            // COUCOU
         }
 
         ArrayList<String> liste = new ArrayList<>();
@@ -34,6 +35,7 @@ public class RequeteSocketTest
         }
         catch (Exception e)
         {
+            // COUCOU
         }
 
         HashMap<String, Integer> map = new HashMap<>();
@@ -46,6 +48,7 @@ public class RequeteSocketTest
         }
         catch (Exception e)
         {
+            // COUCOU
         }
     }
 }

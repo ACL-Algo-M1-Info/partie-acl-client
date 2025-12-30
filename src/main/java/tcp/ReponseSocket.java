@@ -20,6 +20,9 @@ public class ReponseSocket
     /** Segment de la réponse à la reqûete */
     public static final String SEGMENT_REPONSE = "reponse";
 
+    /** Segment de l'id de conversation */
+    public static final String SEGMENT_IDCONVERSATION = "idConversation";
+
     // VARIABLES
 
     /** Statut de la reqûete reçue */
@@ -27,6 +30,9 @@ public class ReponseSocket
 
     /** Réponse reçue du serveur */
     public JsonNode reponse;
+
+    /** Id de la conversation */
+    public int idConversation = 0;
 
     /** Contenu JSON du json message */
     public String contenuInitial;
@@ -39,8 +45,8 @@ public class ReponseSocket
     /**
      * Identifie la réponse reçue suite à une reqûete suite à une requête envoyée
      *
-     * @param contenuInitial
-     * @throws JsonProcessingException
+     * @param contenuInitial le json de la réponse
+     * @throws JsonProcessingException si contenuInitial n'est pas au format JSON
      */
     ReponseSocket(String contenuInitial) throws JsonProcessingException
     {
@@ -55,6 +61,7 @@ public class ReponseSocket
                     "{\n" +
                     "\"" + SEGMENT_STATUT + "\":0\n" +
                     "\"" + SEGMENT_REPONSE + "\":...\n" +
+                    "\"" + SEGMENT_IDCONVERSATION + "\":0\n" +
                     "}\n"
             );
 
@@ -70,7 +77,7 @@ public class ReponseSocket
      */
     boolean respecteStructure()
     {
-        return jsonMessage.has(SEGMENT_STATUT) && jsonMessage.has(SEGMENT_REPONSE);
+        return jsonMessage.has(SEGMENT_STATUT) && jsonMessage.has(SEGMENT_REPONSE) && jsonMessage.has(SEGMENT_IDCONVERSATION);
     }
 
     @Override

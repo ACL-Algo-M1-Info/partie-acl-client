@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.HashMap;
 
 // CLASSE
 
@@ -23,8 +24,14 @@ public class ConnexionServeur extends Thread
 	// VARIABLES
 
 	public Socket socket;
+
 	BufferedReader in;
+
 	PrintStream out;
+
+    private int idConversation = 0;
+
+    private final HashMap<Integer, ReponseSocket> map = new HashMap<>();
 
 	// METHODES DU SINGLETON
 
@@ -59,17 +66,22 @@ public class ConnexionServeur extends Thread
 		t.start();
 	}
 
+    // METHODES
+
 	@Override
-	public void run() {
+	public void run()
+    {
 		try {
 			while (!this.isInterrupted() && !socket.isClosed())
 			{
-				// Réception des données
-				// Message : chaine de caractère qui va prendre une ligne (fin de ligne \r\n)
-				// { "type": "api", "data": {"commande": string, "args": [...Object]}  }
-				// On recevra du serveur un message du type { status: 200, resp: ? }
+                String message = in.readLine();
 
+                ReponseSocket repSocket = new ReponseSocket(message);
 
+                synchronized (this.map)
+                {
+                    map.put(repSocket.idConversation, repSocket);
+                }
 			}
 		}
 		catch (Exception e)
@@ -77,4 +89,32 @@ public class ConnexionServeur extends Thread
 			e.printStackTrace();
 		}
 	}
+
+    public ReponseSocket send(SendableObject sendableObject)
+    {
+        try
+        {
+            sendableObject.setIdConversation(idConversation);
+            out.println(sendableObject);
+            synchronized(this.map)
+            {
+                while(this.map.get(idConversation) == null)
+                    this.map.wait();
+
+                ReponseSocket reponseSocket = this.map.get(idConversation);
+
+                map.remove(idConversation);
+
+                this.map.notifyAll();
+
+                idConversation++;
+                return  reponseSocket;
+            }
+        }
+        catch (InterruptedException e)
+        {
+            idConversation++;
+            return null;
+        }
+    }
 }

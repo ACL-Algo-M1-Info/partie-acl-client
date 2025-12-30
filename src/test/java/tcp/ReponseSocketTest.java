@@ -8,9 +8,9 @@ public class ReponseSocketTest
 
     @Test
     public void testJSON() throws JsonProcessingException {
-        String json = "{\"statut\":200, \"reponse\":\"RAYMI\"}";
+        String json = "{\"statut\":200, \"reponse\":\"RAYMI\", \"idConversation\":0}";
 
         ReponseSocket message = new ReponseSocket(json);
-        System.out.println(message.toString());
+        System.out.println(message);
     }
 }

@@ -16,7 +16,7 @@ public enum CodeStatutReponse
     // VARIABLES
 
     /** Représente le code du statut de la réponse */
-    private int code;
+    private final int code;
 
     // CONSTRUCTEURS
 
