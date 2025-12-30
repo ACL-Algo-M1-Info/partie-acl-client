@@ -64,7 +64,11 @@ public class ConnexionServeur extends Thread
 		try {
 			while (!this.isInterrupted() && !socket.isClosed())
 			{
-				// Envoi des données
+				// Réception des données
+				// Message : chaine de caractère qui va prendre une ligne (fin de ligne \r\n)
+				// { "type": "api", "data": {"commande": string, "args": [...Object]}  }
+				// On recevra du serveur un message du type { status: 200, resp: ? }
+
 
 			}
 		}
