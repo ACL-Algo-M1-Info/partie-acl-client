@@ -81,6 +81,7 @@ public class ConnexionServeur extends Thread
                 synchronized (this.map)
                 {
                     map.put(repSocket.idConversation, repSocket);
+					map.notifyAll();
                 }
 			}
 		}
