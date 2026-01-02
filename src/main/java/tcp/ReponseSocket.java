@@ -66,6 +66,7 @@ public class ReponseSocket
             );
 
         this.statut = CodeStatutReponse.fromCode(jsonMessage.get(SEGMENT_STATUT).asInt());
+        this.idConversation = jsonMessage.get(SEGMENT_IDCONVERSATION).asInt();
         this.reponse = jsonMessage.get(SEGMENT_REPONSE);
     }
 

@@ -11,7 +11,9 @@ public enum CodeStatutReponse
 
     // CONSTANTES
 
-    OK(200);
+    OK(200),
+    ERREUR_INEXISTANT(404),
+    ERREUR_INTERNE(500);
 
     // VARIABLES
 

@@ -16,6 +16,9 @@ import java.util.HashMap;
 
 public class ConnexionServeur extends Thread
 {
+	// CONSTANTES
+
+	public final static double TIMEOUT_MS = 10_000;
 
 	// SINGLETON
 
@@ -29,7 +32,8 @@ public class ConnexionServeur extends Thread
 
 	PrintStream out;
 
-    private int idConversation = 0;
+	/** ID de conversation, 0 implique erreur */
+    private int idConversation = 1;
 
     private final HashMap<Integer, ReponseSocket> map = new HashMap<>();
 
@@ -61,9 +65,6 @@ public class ConnexionServeur extends Thread
 
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		out = new PrintStream(socket.getOutputStream());
-
-		Thread t = new Thread(this);
-		t.start();
 	}
 
     // METHODES
@@ -78,11 +79,15 @@ public class ConnexionServeur extends Thread
 
                 ReponseSocket repSocket = new ReponseSocket(message);
 
-                synchronized (this.map)
-                {
-                    map.put(repSocket.idConversation, repSocket);
-					map.notifyAll();
-                }
+				// Réponse valide (0 veut dire que le serveur n'a pas pu parser le message initial)
+				if (repSocket.idConversation > 0)
+				{
+					synchronized (this.map)
+					{
+						map.put(repSocket.idConversation, repSocket);
+						map.notifyAll();
+					}
+				}
 			}
 		}
 		catch (Exception e)
@@ -91,31 +96,73 @@ public class ConnexionServeur extends Thread
 		}
 	}
 
-    public ReponseSocket send(SendableObject sendableObject)
+	public void demarrer()
+	{
+		start();
+	}
+
+    public ReponseSocket envoyer(SendableObject sendableObject)
     {
-        try
-        {
-            sendableObject.setIdConversation(idConversation);
-            out.println(sendableObject);
-            synchronized(this.map)
-            {
-                while(this.map.get(idConversation) == null)
-                    this.map.wait();
-
-                ReponseSocket reponseSocket = this.map.get(idConversation);
-
-                map.remove(idConversation);
-
-                this.map.notifyAll();
-
-                idConversation++;
-                return  reponseSocket;
-            }
-        }
-        catch (InterruptedException e)
-        {
-            idConversation++;
-            return null;
-        }
+        return envoyer(sendableObject, TIMEOUT_MS);
     }
+
+	public ReponseSocket envoyer(SendableObject sendableObject, double timeoutMS)
+	{
+		timeoutMS = Math.max(timeoutMS, 10e-6);
+
+		try
+		{
+			int id;
+
+			// Incrémentation de l'id de conversation thread-safe.
+			synchronized (this)
+			{
+				id = idConversation++;
+				notifyAll();
+			}
+
+			sendableObject.setIdConversation(id);
+			out.println(sendableObject);
+
+			// Enregistrement du temps
+			double deadline = System.currentTimeMillis() + timeoutMS;
+
+			// Lecture/modification de la map
+			synchronized(this.map)
+			{
+				while (true)
+				{
+					ReponseSocket reponse = map.get(id);
+
+					// Réponse valide, on renvoie (sans oublier de notifier)
+					if (reponse != null)
+					{
+						map.remove(id);
+						map.notifyAll();
+						return reponse;
+					}
+
+					double waitTime = deadline - System.currentTimeMillis();
+
+					// Timeout
+					if (waitTime <= 0)
+					{
+						// Au cas où
+						map.remove(id);
+
+						// Rien à renvoyer
+						map.notifyAll();
+						return null;
+					}
+
+					// Pas de réponse ni de timeout, on attend
+					map.wait((long)waitTime);
+				}
+			}
+		}
+		catch (InterruptedException e)
+		{
+			return null;
+		}
+	}
 }

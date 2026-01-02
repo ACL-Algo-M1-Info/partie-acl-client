@@ -10,7 +10,8 @@ public enum CodeTypeRequete {
 
     // CONSTANTES
 
-    API(10);
+    API(10),
+    MESSAGE(45);
 
     // VARIABLES
 
