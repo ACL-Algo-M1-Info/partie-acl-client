@@ -3,23 +3,23 @@ package parseur;
 import org.junit.Test;
 import types.livraisonVille.LivraisonVille;
 
-import java.io.File;
-import java.sql.SQLOutput;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 public class ParseurCSVTest {
 
     @Test
-    public void testaupif()
+    public void testParseurCSV()
     {
-        ParseurCSV parseur = new ParseurCSV(";");
+        ParseurCSV parseur = new ParseurCSV(';');
 
-        ReponseParseur reponse = parseur.parser("data/testParseur/test.csv");
+        HashMap<Integer, LivraisonVille> map = parseur.parser("data/testParseur/test.csv");
 
-        System.out.println(reponse);
+        for(Map.Entry m: map.entrySet())
+        {
+            System.out.println("Id : " + m.getKey() + "; Ville à livrer : [ " + m.getValue() + " ]");
+        }
     }
 
 }

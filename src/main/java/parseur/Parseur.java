@@ -7,7 +7,7 @@ package parseur;
 
 import types.livraisonVille.LivraisonVille;
 
-import java.io.BufferedReader;
+import java.io.File;
 import java.util.HashMap;
 
 // INTERFACE
@@ -22,12 +22,23 @@ public interface Parseur
      * @param nomFichier le nom du fichier à parser
      * @return la hashmap aves un id par ville et par livraison
      */
-    ReponseParseur parser(String nomFichier);
+    HashMap<Integer, LivraisonVille> parser(String nomFichier);
 
     /**
      * Vérifier que le fichier existe bien et qu'il est dans le bon format
-     * @return true si le fichier existe et qu'il est dans le bon format
+     * @param fichier le fichier à vérifier
+     * @param extension l'extension à avoir sur le fichier donné
      */
-    BufferedReader verifierFichier(String nomFichier);
+    default void verifierFichier(File fichier, String extension)
+    {
 
+        if(!fichier.exists())
+            throw new IllegalArgumentException("Le fichier donné n'existe pas...");
+
+        if(!fichier.getName().endsWith(extension))
+        {
+            throw new IllegalArgumentException("Le fichier donné n'est pas au format : " + extension);
+        }
+
+    }
 }

@@ -4,9 +4,13 @@ package parseur;
 
 // IMPORTS
 
+import com.fasterxml.jackson.databind.MappingIterator;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import types.livraisonVille.LivraisonVille;
 
 import java.io.*;
+import java.util.HashMap;
 
 // CLASSE
 
@@ -15,12 +19,12 @@ public class ParseurCSV implements Parseur
 
     // VARIABLES
 
-    private final String separateur;
+    private final char separateur;
 
 
     // CONSTRUCTEUR
 
-    public ParseurCSV(String separateur)
+    public ParseurCSV(char separateur)
     {
         this.separateur = separateur;
     }
@@ -29,76 +33,56 @@ public class ParseurCSV implements Parseur
     // METHODES
 
     @Override
-    public ReponseParseur parser(String nomFichier)
+    public HashMap<Integer, LivraisonVille> parser(String nomFichier)
     {
 
         // Vérification du fichier
 
-        BufferedReader br = verifierFichier(nomFichier);
+        File fichier = new File(nomFichier);
+        verifierFichier(fichier, ".csv");
 
-        // Parsing de la première ligne
+        HashMap<Integer, LivraisonVille> resultat = new HashMap<>();
 
-        ReponseParseur reponse;
+        // Parsing des lignes du fichier
 
-        try
-        {
-            reponse = parserPremiereLigne(br);
-        }
-        catch (IOException io)
-        {
-            throw new IllegalArgumentException("Le fichier est inaccessilble...");
-        }
-
-        // Parsing du reste des lignes
-
-        String ligneCourante;
+        // Compteur pour les ids de la hashmap de ReponseParseur
 
         int compteur = -1;
 
+        // Mapping du parseur
+
+        CsvMapper mapper = new CsvMapper();
+
+        // Construction du schéma du parseur
+
+        CsvSchema schema = CsvSchema.emptySchema()
+                .withHeader()
+                .withColumnSeparator(separateur);
+
+        // Définition de l'itérateur pour le parseur
+
+        MappingIterator<LivraisonVille> it;
+
         try
         {
-            while ((ligneCourante = br.readLine()) != null)
-            {
-
-                // Split de la ligne
-
-                String[] ligne = ligneCourante.split(separateur);
-
-                reponse.livraisons.put(++compteur, new LivraisonVille(ligne[0], Integer.parseInt(ligne[1])));
-            }
+            it = mapper.readerFor(LivraisonVille.class)
+                    .with(schema)
+                    .readValues(fichier);
         }
         catch (IOException io)
         {
-            throw new RuntimeException(io);
+            throw new RuntimeException("Impossible de parser le fichier...");
         }
 
-        return reponse;
-    }
+        // On peut maintenant parser le fichier
 
-    @Override
-    public BufferedReader verifierFichier(String nomFichier) {
-
-        if(nomFichier.endsWith(".csv"))
+        while(it.hasNext())
         {
-            BufferedReader br;
-            try
-            {
-                br =  new BufferedReader(new FileReader(nomFichier));
-            }
-            catch (FileNotFoundException f)
-            {
-                throw new IllegalArgumentException("Le fichier n'a pas été trouvé : " + f.toString());
-            }
-
-            return br;
+            LivraisonVille livraison = it.next();
+            resultat.put(++compteur, livraison);
         }
-        else throw new IllegalArgumentException("Le fichier n'est pas au format CSV...");
-    }
 
-    private ReponseParseur parserPremiereLigne(BufferedReader br) throws IOException {
+        return resultat;
 
-        String[] premiereLigne = br.readLine().split(this.separateur);
-
-        return new ReponseParseur(Integer.parseInt(premiereLigne[2]));
     }
 }
