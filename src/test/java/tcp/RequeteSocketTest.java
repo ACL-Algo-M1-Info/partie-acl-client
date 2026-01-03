@@ -1,7 +1,7 @@
 package tcp;
 
 import org.junit.Test;
-import typesCode.CodeTypeRequete;
+import types.typesCode.CodeTypeRequete;
 
 import java.util.ArrayList;
 import java.util.HashMap;

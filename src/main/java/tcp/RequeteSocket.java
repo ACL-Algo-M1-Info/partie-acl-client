@@ -5,7 +5,7 @@ package tcp;
 // IMPORTS
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import typesCode.CodeTypeRequete;
+import types.typesCode.CodeTypeRequete;
 
 import java.io.IOException;
 import java.io.StringWriter;
