@@ -84,7 +84,10 @@ public class ConnexionServeur extends Thread
 				{
 					synchronized (this.map)
 					{
-						map.put(repSocket.idConversation, repSocket);
+						// On insère uniquement s'il y a une intention d'insertion. Utile si jamais le thread envoyeur s'est désisté et que le serveur a envoyé une réponse APRES coup
+						if (map.containsKey(repSocket.idConversation))
+							map.put(repSocket.idConversation, repSocket);
+
 						map.notifyAll();
 					}
 				}
@@ -130,32 +133,26 @@ public class ConnexionServeur extends Thread
 			// Lecture/modification de la map
 			synchronized(this.map)
 			{
+				// Met "null" dans la map, pour déterminer l'intention d'obtenir une donnée au récepteur.
+				map.put(id, null);
+
 				while (true)
 				{
 					ReponseSocket reponse = map.get(id);
+					double waitTime = deadline - System.currentTimeMillis();
 
-					// Réponse valide, on renvoie (sans oublier de notifier)
-					if (reponse != null)
+					// Réponse valide OU timeout, on renvoie (sans oublier de notifier)
+					if (reponse != null || waitTime <= 0)
 					{
+						// Réponse valide ou timeout, soit la réponse est valide, soit null (rien).
+						// Il ne faut pas oublier de clear le dictionnaire & de notifier les autres threads.
+
 						map.remove(id);
 						map.notifyAll();
 						return reponse;
 					}
 
-					double waitTime = deadline - System.currentTimeMillis();
-
-					// Timeout
-					if (waitTime <= 0)
-					{
-						// Au cas où
-						map.remove(id);
-
-						// Rien à renvoyer
-						map.notifyAll();
-						return null;
-					}
-
-					// Pas de réponse ni de timeout, on attend
+					// Pas de réponse ni de timeout, on attend.
 					map.wait((long)waitTime);
 				}
 			}
