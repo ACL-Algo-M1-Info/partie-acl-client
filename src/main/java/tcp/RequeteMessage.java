@@ -1,6 +1,6 @@
 package tcp;
 
-import typesCode.CodeTypeRequete;
+import types.typesCode.CodeTypeRequete;
 
 import java.io.IOException;
 
