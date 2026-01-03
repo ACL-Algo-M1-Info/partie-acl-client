@@ -15,11 +15,15 @@ public class ServeurTest
         c.demarrer();
 
         System.out.println(">>> 1re requête ========");
-        ReponseSocket reponse = c.envoyer(new RequeteAPI("bonsoir", 1, 2, 3));
+        ReponseSocket reponse = c.envoyer(new RequeteAPI("ordo", 1, 2, 3));
         System.out.println("Réponse 1 reçue : " + reponse + "\n");
 
         System.out.println(">>> 2e requête ========");
         ReponseSocket reponse2 = c.envoyer(new RequeteAPI("bonsoir", 1, 2, 3));
-        System.out.println("Réponse 2 reçue : " + reponse2);
+        System.out.println("Réponse 2 reçue : " + reponse2 + "\n");
+
+        System.out.println(">>> 3e requête ========");
+        ReponseSocket reponse3 = c.envoyer(new RequeteMessage("Je suis une limace"));
+        System.out.println("Réponse 3 reçue : " + reponse3);
     }
 }
