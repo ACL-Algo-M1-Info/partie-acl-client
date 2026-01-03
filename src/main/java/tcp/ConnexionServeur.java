@@ -111,11 +111,10 @@ public class ConnexionServeur extends Thread
 
 	public ReponseSocket envoyer(SendableObject sendableObject, double timeoutMS)
 	{
-		timeoutMS = Math.max(timeoutMS, 10e-6);
-
 		try
 		{
 			int id;
+			boolean timeoutAllowed = timeoutMS >= 0;
 
 			// Incrémentation de l'id de conversation thread-safe.
 			synchronized (this)
@@ -142,7 +141,7 @@ public class ConnexionServeur extends Thread
 					double waitTime = deadline - System.currentTimeMillis();
 
 					// Réponse valide OU timeout, on renvoie (sans oublier de notifier)
-					if (reponse != null || waitTime <= 0)
+					if (reponse != null || (waitTime <= 0 && timeoutAllowed))
 					{
 						// Réponse valide ou timeout, soit la réponse est valide, soit null (rien).
 						// Il ne faut pas oublier de clear le dictionnaire & de notifier les autres threads.
@@ -153,7 +152,10 @@ public class ConnexionServeur extends Thread
 					}
 
 					// Pas de réponse ni de timeout, on attend.
-					map.wait((long)waitTime);
+					if (timeoutAllowed)
+						map.wait((long)waitTime);
+					else
+						map.wait();
 				}
 			}
 		}
