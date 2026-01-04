@@ -1,12 +1,17 @@
 package org.main;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import parseur.ParseurCSV;
 import tcp.ConnexionServeur;
 import tcp.ReponseSocket;
 import tcp.RequeteAPI;
+import types.camion.Camion;
 import types.livraisonVille.LivraisonVille;
+import types.typesCode.CodeStatutReponse;
+import utils.Utils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +23,8 @@ public class Main
     {
 
         HashMap<Integer, LivraisonVille> repParseur = LireFichierCSV();
+
+
         try {
             DemarrageServeur();
         }
@@ -26,9 +33,36 @@ public class Main
             throw new RuntimeException("Problème connexion au serveur...");
         }
 
-        //ConnexionServeur c = ConnexionServeur.getInstance();
-        EnvoyerDonnees(repParseur);
+        ReponseSocket reponse = EnvoyerDonnees(repParseur);
+        System.out.println("Réponse reçue : " + reponse);
 
+        estOk(reponse);
+
+
+        ArrayList<ArrayList<Integer>> ordos;
+
+        try {
+            ordos = Utils.jsonVersT(reponse.reponse);
+        }
+        catch (JsonProcessingException j)
+        {
+            throw new RuntimeException("Json illisible...");
+        }
+
+        afficherOrdos(ordos);
+
+        ArrayList<Camion> camions = new ArrayList<>();
+        for(ArrayList<Integer> ordo: ordos)
+        {
+            ArrayList<LivraisonVille> livraisons = new ArrayList<>();
+            for(Integer i: ordo)
+            {
+                livraisons.add(repParseur.get(i));
+            }
+            camions.add(new Camion(livraisons));
+        }
+
+        System.out.println(camions);
     }
 
     /**
@@ -72,7 +106,7 @@ public class Main
 
     }
 
-    public static void EnvoyerDonnees(HashMap<Integer, LivraisonVille> donnees)
+    public static ReponseSocket EnvoyerDonnees(HashMap<Integer, LivraisonVille> donnees)
     {
 
         // Conversation en tableau
@@ -101,9 +135,30 @@ public class Main
 
         System.out.println("Instance : n = " + n + ", m = " + m + ", p = " + Arrays.toString(p));
 
-        ReponseSocket reponse = ConnexionServeur.getInstance().envoyer(new RequeteAPI("ordo", m, p), -1);
+        return ConnexionServeur.getInstance().envoyer(new RequeteAPI("ordo", m, p), -1);
 
-        System.out.println("Réponse reçue : " + reponse);
+    }
+
+    public static void estOk(ReponseSocket reponse)
+    {
+        if(reponse.statut != CodeStatutReponse.OK)
+            throw new RuntimeException("Réponse invalide : " + reponse.toString());
+    }
+
+    public static void afficherOrdos(ArrayList<ArrayList<Integer>> ordos)
+    {
+        System.out.println("Ordonnancements :");
+        System.out.println("[");
+        for(ArrayList<Integer> i: ordos)
+        {
+            System.out.print("[ ");
+            for(Integer j: i)
+            {
+                System.out.print(String.valueOf(j) + " ");
+            }
+            System.out.println("]");
+        }
+        System.out.println("]");
     }
 
 }
