@@ -3,6 +3,8 @@ package tcp;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.stream.IntStream;
 
 public class ServeurTest
 {
@@ -14,16 +16,35 @@ public class ServeurTest
 
         c.demarrer();
 
-        System.out.println(">>> 1re requête ========");
-        ReponseSocket reponse = c.envoyer(new RequeteAPI("ordo", 1, 2, 3));
-        System.out.println("Réponse 1 reçue : " + reponse + "\n");
+        {
+            System.out.println(">>> 1re requête ========");
+            ReponseSocket reponse = c.envoyer(new RequeteAPI("ordo", 1, 2, 3));
+            System.out.println("Réponse 1 reçue : " + reponse + "\n");
+        }
 
-        System.out.println(">>> 2e requête ========");
-        ReponseSocket reponse2 = c.envoyer(new RequeteAPI("bonsoir", 1, 2, 3));
-        System.out.println("Réponse 2 reçue : " + reponse2 + "\n");
+        {
+            System.out.println(">>> 2e requête ========");
+            ReponseSocket reponse = c.envoyer(new RequeteAPI("bonsoir", 1, 2, 3));
+            System.out.println("Réponse 2 reçue : " + reponse + "\n");
+        }
 
-        System.out.println(">>> 3e requête ========");
-        ReponseSocket reponse3 = c.envoyer(new RequeteMessage("Je suis une limace"));
-        System.out.println("Réponse 3 reçue : " + reponse3);
+        {
+            System.out.println(">>> 3e requête ========");
+            ReponseSocket reponse = c.envoyer(new RequeteMessage("Je suis une limace"));
+            System.out.println("Réponse 3 reçue : " + reponse + "\n");
+        }
+
+        {
+            System.out.println(">>> 4e requête ========");
+            int[] p = new int[] {3, 2, 2, 2, 3};
+            int n = p.length;
+            int m = 2;
+
+            System.out.println("Instance: n = " + n + ", m = " + m + ", p = " + Arrays.toString(p));
+
+            ReponseSocket reponse = c.envoyer(new RequeteAPI("ordo", m, p), -1);
+
+            System.out.println("Réponse 4 reçue : " + reponse);
+        }
     }
 }
