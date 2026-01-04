@@ -5,7 +5,7 @@ package tcp;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import typesCode.CodeStatutReponse;
+import types.typesCode.CodeStatutReponse;
 
 // CLASSE
 

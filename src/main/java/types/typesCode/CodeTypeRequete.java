@@ -1,6 +1,6 @@
 // PACKAGE
 
-package typesCode;
+package types.typesCode;
 
 // ENUM
 

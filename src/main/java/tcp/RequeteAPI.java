@@ -4,7 +4,7 @@ package tcp;
 
 // IMPORTS
 
-import typesCode.CodeTypeRequete;
+import types.typesCode.CodeTypeRequete;
 
 import java.io.IOException;
 import java.util.ArrayList;
