@@ -20,6 +20,12 @@ public class Vecteur2D {
         Y = y;
     }
 
+    public Vecteur2D(Vecteur2D point)
+    {
+        this.X = point.X;
+        this.Y = point.Y;
+    }
+
     /**
      * Génération d'un vecteur vide (0, 0).
      */

@@ -4,6 +4,8 @@ package fenetre;
 
 // IMPORTS
 
+import math.Vecteur2D;
+
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -11,11 +13,12 @@ import java.awt.image.BufferStrategy;
 
 // CLASSE
 
-public class Fenetre
+public abstract class Fenetre
 {
 
     // VARIABLES
 
+    public Frame frame;
     public Graphics graphics;
     public BufferStrategy strategy;
     public Insets insets;
@@ -28,7 +31,7 @@ public class Fenetre
 
         // Mise en place de l'affichage
 
-        Frame frame = new Frame("Solution du problème");
+        this.frame = new Frame("Solution du problème");
         frame.setBounds(x, y, width, height);
         frame.setResizable(false);
         frame.setVisible(true);
@@ -64,6 +67,15 @@ public class Fenetre
             }
         });
 
+        frame.addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                frame.dispose();
+            }
+        });
+
     }
 
     /**
@@ -74,4 +86,18 @@ public class Fenetre
         this.graphics.dispose();
         this.strategy.show();
     }
+
+    public Vecteur2D obtenirPointMinimal()
+    {
+        return new Vecteur2D(this.insets.left, this.frame.getHeight() - this.insets.bottom);
+    }
+
+    public Vecteur2D obtenirPointMaximal()
+    {
+        return new Vecteur2D(this.frame.getWidth() - this.insets.right, insets.top);
+    }
+
+    public abstract void dessinerSommet(Vecteur2D point);
+
+    public abstract void dessinerArete(Vecteur2D point1, Vecteur2D point2);
 }
