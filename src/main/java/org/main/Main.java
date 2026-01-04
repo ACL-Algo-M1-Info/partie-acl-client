@@ -10,7 +10,9 @@ import types.livraisonVille.LivraisonVille;
 import types.typesCode.CodeStatutReponse;
 import utils.Utils;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -67,26 +69,44 @@ public class Main
         ConnexionServeur.getInstance().arreter();
     }
 
+    public static String lireLigne()
+    {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+        String res;
+
+        try
+        {
+            res = reader.readLine();
+        }
+        catch(IOException e)
+        {
+            throw new RuntimeException("Impossible de lire le clavier...");
+        }
+
+        return res;
+    }
+
     /**
      * Lecture d'un fichier CSV et parsing
      */
     public static HashMap<Integer, LivraisonVille> LireFichierCSV()
     {
 
-        System.out.println("Entrez le nom du fichier CSV à parcourir (avec le chemin) : ");
+        System.out.print("Entrez le nom du fichier CSV à parcourir (avec le chemin) : ");
 
-        String nomFichier = System.console().readLine();
+        String nomFichier = lireLigne();
 
-        System.out.printf("Quel est le séparateur de votre fichier ? ATTENTION : seul le premier caractère sera pris en compte !\n");
+        System.out.print("Entrez le symbole du séparateur utilisé pour le csv (ATTENTION : seul le premier caractère sera pris en compte) : ");
 
-        String separateurS = System.console().readLine();
+        String separateurS = lireLigne();
         char separateur = separateurS.charAt(0);
 
         ParseurCSV parseur = new ParseurCSV(separateur);
 
         HashMap<Integer, LivraisonVille> resParseur = parseur.parser(nomFichier);
 
-        System.out.printf("Résultat du parsing : ");
+        System.out.print("Résultat du parsing : ");
         for(Map.Entry m: resParseur.entrySet())
         {
             System.out.println("Id : " + m.getKey() + "; Ville à livrer : [ " + m.getValue() + " ]");
@@ -104,7 +124,7 @@ public class Main
         ConnexionServeur c = ConnexionServeur.getInstance();
         c.demarrer();
 
-        System.out.printf("Connexion réussie !\n");
+        System.out.println("Connexion réussie !");
 
     }
 
@@ -127,11 +147,11 @@ public class Main
 
         // Saisie du nombre de camions
 
-        System.out.println("Combien voulez vous de camions ? ");
+        System.out.print("Entrez le nombre de camions désiré : ");
         int m;
         do
         {
-            m = Integer.parseInt(System.console().readLine());
+            m = Integer.parseInt(lireLigne());
         }
         while(m <= 0);
 
