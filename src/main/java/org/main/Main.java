@@ -63,6 +63,8 @@ public class Main
         }
 
         System.out.println(camions);
+
+        ConnexionServeur.getInstance().arreter();
     }
 
     /**
