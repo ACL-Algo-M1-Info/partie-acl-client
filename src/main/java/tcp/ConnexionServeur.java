@@ -104,6 +104,11 @@ public class ConnexionServeur extends Thread
 		start();
 	}
 
+	public void arreter()
+	{
+		interrupt();
+	}
+
     public ReponseSocket envoyer(SendableObject sendableObject)
     {
         return envoyer(sendableObject, TIMEOUT_MS);
