@@ -93,6 +93,12 @@ public class ConnexionServeur extends Thread
 				}
 			}
 		}
+		catch (IOException e)
+		{
+			// Erreur pendant socket ouvert
+			if (!socket.isClosed())
+				e.printStackTrace();
+		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
@@ -106,7 +112,19 @@ public class ConnexionServeur extends Thread
 
 	public void arreter()
 	{
+		try
+		{
+			socket.close();
+		}
+		catch(IOException e)
+		{ /* Rien */ }
+
+		System.out.println("Fermeture du socket de connexion avec le serveur");
+
 		interrupt();
+
+		// S'autolibère
+		instance = null;
 	}
 
     public ReponseSocket envoyer(SendableObject sendableObject)
