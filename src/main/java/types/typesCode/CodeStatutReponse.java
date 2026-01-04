@@ -13,6 +13,7 @@ public enum CodeStatutReponse
 
     OK(200),
     ERREUR_INEXISTANT(404),
+    ERREUR_FORMAT_INVALIDE(419),
     ERREUR_INTERNE(500);
 
     // VARIABLES
