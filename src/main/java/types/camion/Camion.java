@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class Camion
 {
 
+    /** Liste des livraisons que le camion doit effectuer */
     public ArrayList<LivraisonVille> livraisons = new ArrayList<>();
 
     public Camion()
@@ -31,6 +32,10 @@ public class Camion
     }
 
 
+    /**
+     * Permet d'obtenir le nom des villes que le camion doit livrer
+     * @return une liste de String avec le nom des villes que le camion doit livrer
+     */
     public ArrayList<String> obtenirVilles()
     {
 
@@ -44,6 +49,11 @@ public class Camion
 
     }
 
+    /**
+     * Permet d'obtenir une liste de liste des villes que plusieurs camions doivent parcourir
+     * @param camions les camions dont on veut lister les villes
+     * @return une liste de liste des villes que les camions doivent livrer
+     */
     public static ArrayList<ArrayList<String>> obtenirVillesParCamion(ArrayList<Camion> camions)
     {
 

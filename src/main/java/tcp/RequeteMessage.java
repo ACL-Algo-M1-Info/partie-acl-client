@@ -4,6 +4,9 @@ import types.typesCode.CodeTypeRequete;
 
 import java.io.IOException;
 
+/**
+ * Représente une reqûete qu'on veut envoyer au serveur
+ */
 public class RequeteMessage implements SendableObject
 {
     // VARIABLES
@@ -15,6 +18,10 @@ public class RequeteMessage implements SendableObject
 
     // CONSTRUCTEUR
 
+    /**
+     * Créer une reqûete à partir d'un message donné
+     * @param msg le message à envoyer
+     */
     public RequeteMessage(String msg)
     {
         this.msg = msg;

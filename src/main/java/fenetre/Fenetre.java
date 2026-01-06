@@ -18,9 +18,16 @@ public abstract class Fenetre
 
     // VARIABLES
 
+    /** Fenêtre de l'application */
     public Frame frame;
+
+    /** Dessinateur de formes */
     public Graphics graphics;
+
+    /** Stratégie de mise en tampon */
     public BufferStrategy strategy;
+
+    /** Bordures de la fenêtre */
     public Insets insets;
 
 
@@ -97,7 +104,16 @@ public abstract class Fenetre
         return new Vecteur2D(this.frame.getWidth() - this.insets.right, insets.top);
     }
 
+    /**
+     * Méthode qui permet de dessiner un sommet (représenté par un cercle plein)
+     * @param point les coordonnées du sommet à placer
+     */
     public abstract void dessinerSommet(Vecteur2D point);
 
+    /**
+     * Méthode qui permet de créer une arête (représenté par une ligne)
+     * @param point1 les coordonnées du début de l'arête
+     * @param point2 les coordonnées de la fin de l'arête
+     */
     public abstract void dessinerArete(Vecteur2D point1, Vecteur2D point2);
 }

@@ -9,6 +9,9 @@ import types.typesCode.CodeStatutReponse;
 
 // CLASSE
 
+/**
+ * Représente la réponse du serveur après une reqûete
+ */
 public class ReponseSocket
 {
 
