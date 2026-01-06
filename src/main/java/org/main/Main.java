@@ -35,7 +35,7 @@ public class Main
             throw new RuntimeException("Problème connexion au serveur...");
         }
 
-        ReponseSocket reponse = EnvoyerDonnees(repParseur);
+        ReponseSocket reponse = envoyerDonnees(repParseur);
         System.out.println("Réponse reçue : " + reponse);
 
         estOk(reponse);
@@ -128,7 +128,7 @@ public class Main
 
     }
 
-    public static ReponseSocket EnvoyerDonnees(HashMap<Integer, LivraisonVille> donnees)
+    public static ReponseSocket envoyerDonnees(HashMap<Integer, LivraisonVille> donnees)
     {
 
         // Conversation en tableau
@@ -181,6 +181,15 @@ public class Main
             System.out.println("]");
         }
         System.out.println("]");
+    }
+
+    //tsp
+    public static void appelTSP(ArrayList<Camion> camions)
+    {
+        for(Camion camion: camions)
+        {
+            //RequeteAPI requete = new RequeteAPI()
+        }
     }
 
 }

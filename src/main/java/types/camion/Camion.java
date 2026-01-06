@@ -29,4 +29,32 @@ public class Camion
 
         return res;
     }
+
+
+    public ArrayList<String> obtenirVilles()
+    {
+
+        ArrayList<String> villes = new ArrayList<>();
+
+        for(LivraisonVille l: livraisons)
+            villes.add(l.nomVille);
+
+
+        return villes;
+
+    }
+
+    public static ArrayList<ArrayList<String>> obtenirVillesParCamion(ArrayList<Camion> camions)
+    {
+
+        ArrayList<ArrayList<String>> villesParCamion = new ArrayList<>();
+
+        for(Camion camion: camions)
+        {
+            villesParCamion.add(camion.obtenirVilles());
+        }
+
+        return villesParCamion;
+
+    }
 }
