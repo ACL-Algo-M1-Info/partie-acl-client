@@ -1,12 +1,26 @@
+// PACKAGE
+
 package types.ville;
 
+// CLASSE
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Ville
 {
 
+    // VARIABLES
+
+    @JsonProperty("ville")
     public String nom;
 
-    public double longitude, latitude;
+    @JsonProperty("longitude")
+    public double longitude;
+
+    @JsonProperty("latitude")
+    public double latitude;
+
+    // CONSTRUCTEUR
 
     public Ville() { }
 

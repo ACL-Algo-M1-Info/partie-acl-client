@@ -30,10 +30,13 @@ public abstract class Fenetre
     /** Bordures de la fenêtre */
     public Insets insets;
 
+    /** Padding de la fenêtre */
+    public int padding;
+
 
     // CONSTRUCTEUR
 
-    public Fenetre(int x, int y, int width, int height)
+    public Fenetre(int x, int y, int width, int height, int padding)
     {
 
         // Mise en place de l'affichage
@@ -61,6 +64,9 @@ public abstract class Fenetre
         this.strategy = frame.getBufferStrategy();
         this.graphics = strategy.getDrawGraphics();
         this.insets = frame.getInsets();
+
+        // On met le padding
+        this.padding = padding;
 
         // Ecouteur qui permet de fermer la fenêtre (!!!ferme aussi le client!!!)
 
@@ -96,12 +102,12 @@ public abstract class Fenetre
 
     public Vecteur2D obtenirPointMinimal()
     {
-        return new Vecteur2D(this.insets.left, this.frame.getHeight() - this.insets.bottom);
+        return new Vecteur2D(this.insets.left + padding, this.frame.getHeight() - this.insets.bottom - padding);
     }
 
     public Vecteur2D obtenirPointMaximal()
     {
-        return new Vecteur2D(this.frame.getWidth() - this.insets.right, insets.top);
+        return new Vecteur2D(this.frame.getWidth() - this.insets.right - padding, insets.top + padding);
     }
 
     /**
@@ -115,5 +121,5 @@ public abstract class Fenetre
      * @param point1 les coordonnées du début de l'arête
      * @param point2 les coordonnées de la fin de l'arête
      */
-    public abstract void dessinerArete(Vecteur2D point1, Vecteur2D point2);
+    public abstract void dessinerArete(Vecteur2D point1, Vecteur2D point2, Color couleur);
 }

@@ -1,13 +1,21 @@
 package org.main;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import fenetre.FenetreGraphe;
+import math.Vecteur2D;
+import outils.mondeEcran.MondeEcran;
+import outils.mondeEcran.obtentionCoordonnee.ObtentionCoordonnesVille;
 import parseur.ParseurCSV;
 import tcp.ConnexionServeur;
 import tcp.ReponseSocket;
 import tcp.RequeteAPI;
 import types.camion.Camion;
+import types.camion.TrajetCamion;
 import types.livraisonVille.LivraisonVille;
+import types.route.Route;
 import types.typesCode.CodeStatutReponse;
+import types.ville.Ville;
 import utils.Utils;
 
 import java.io.BufferedReader;
@@ -44,7 +52,7 @@ public class Main
         ArrayList<ArrayList<Integer>> ordos;
 
         try {
-            ordos = Utils.jsonVersT(reponse.reponse);
+            ordos = Utils.jsonVersT(reponse.reponse, new TypeReference<ArrayList<ArrayList<Integer>>>() {});
         }
         catch (JsonProcessingException j)
         {
@@ -65,6 +73,25 @@ public class Main
         }
 
         System.out.println(camions);
+
+        ReponseSocket reponseTSP = appelTSP(camions);
+        System.out.println("Réponse TSP : " + reponseTSP);
+        estOk(reponseTSP);
+
+
+        ArrayList<TrajetCamion> trajets;
+        try
+        {
+            trajets = Utils.jsonVersT(reponseTSP.reponse, new TypeReference<ArrayList<TrajetCamion>>() {});
+        }
+        catch (JsonProcessingException j)
+        {
+            throw new RuntimeException("Json illisible :" + j);
+        }
+
+
+        dessinerGraphe(trajets);
+
 
         ConnexionServeur.getInstance().arreter();
     }
@@ -184,12 +211,54 @@ public class Main
     }
 
     //tsp
-    public static void appelTSP(ArrayList<Camion> camions)
+    public static ReponseSocket appelTSP(ArrayList<Camion> camions)
     {
-        for(Camion camion: camions)
+        ArrayList<ArrayList<String>> villesParcouruesParCamion = Camion.obtenirVillesParCamion(camions);
+
+        return ConnexionServeur.getInstance().envoyer(new RequeteAPI("tsp", villesParcouruesParCamion));
+    }
+
+    public static void dessinerGraphe(ArrayList<TrajetCamion> trajets)
+    {
+        FenetreGraphe fenetre = new FenetreGraphe(10, 10, 700, 500, 20);
+
+
+
+        MondeEcran<Ville> mondeEcran = new MondeEcran<>(new ObtentionCoordonnesVille(), fenetre, TrajetCamion.obtenirVillesParcourues(trajets));
+
+        for(TrajetCamion trajet: trajets)
         {
-            //RequeteAPI requete = new RequeteAPI()
+            // Choix de la couleur
+
+            ArrayList<Vecteur2D> points = new ArrayList<>();
+
+            for(Ville ville: trajet.villesParcourues)
+            {
+                Vecteur2D vecteur = mondeEcran.resoudreMondeEcran(ville);
+                fenetre.dessinerVille(vecteur, ville.nom);
+                points.add(vecteur);
+            }
+
+            int indiceVille0 = 0;
+            int indiceVille1 = 1;
+
+            for(int i = 0; i < trajet.villesParcourues.size(); i++)
+            {
+                indiceVille0 = i;
+                indiceVille1 = i+1;
+
+                if(indiceVille1 >= trajet.villesParcourues.size())
+                    indiceVille1 = 0;
+
+                Vecteur2D pointA = points.get(indiceVille0);
+                Vecteur2D pointB = points.get(indiceVille1);
+
+                Route routeActuelle = trajet.routesParcourues.get(indiceVille0);
+                fenetre.dessinerRoute(pointA, pointB, routeActuelle.typeRoute, routeActuelle.distance);
+            }
+
         }
+
     }
 
 }
