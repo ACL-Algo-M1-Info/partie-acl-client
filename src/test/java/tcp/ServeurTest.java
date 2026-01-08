@@ -4,7 +4,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.stream.IntStream;
 
 public class ServeurTest
 {
@@ -42,9 +41,20 @@ public class ServeurTest
 
             System.out.println("Instance: n = " + n + ", m = " + m + ", p = " + Arrays.toString(p));
 
-            ReponseSocket reponse = c.envoyer(new RequeteAPI("ordo", m, p), -1);
+            ReponseSocket reponse = c.envoyer(new RequeteAPI("ordo", m, p));
 
-            System.out.println("Réponse 4 reçue : " + reponse);
+            System.out.println("Réponse 4 reçue : " + reponse + "\n");
+        }
+
+        {
+            System.out.println(">>> 5e requête =========");
+            String[][] villes = new String[][] {
+                    {"Metz", "Nancy"},
+                    {"Lorient", "Quimper", "Vannes"}
+            };
+
+            ReponseSocket reponse = c.envoyer(new RequeteAPI("tsp", (Object)villes), -1);
+            System.out.println("Réponse 5 reçue : " + reponse + "\n");
         }
     }
 }
