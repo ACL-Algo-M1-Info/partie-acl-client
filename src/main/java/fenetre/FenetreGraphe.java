@@ -81,14 +81,19 @@ public class FenetreGraphe extends Fenetre
         this.graphics = this.strategy.getDrawGraphics();
         this.graphics.setColor(Color.black);
 
-        if(point.X > (double) this.frame.getWidth() /2)
-        {
-            FontMetrics fm = graphics.getFontMetrics();
+        int offsetX = RAYON_POINT + 10;
+        int offsetY = offsetX;
 
-            point = new Vecteur2D(point.X - fm.stringWidth(nomVille), point.Y);
+        FontMetrics fm = graphics.getFontMetrics();
+        int taille = fm.stringWidth(nomVille);
+
+        if(point.X + taille >= (double) this.frame.getWidth())
+        {
+            point = new Vecteur2D(point.X - taille, point.Y);
+            offsetX = -offsetX;
         }
 
-        this.graphics.drawString(nomVille, (int) (point.X + RAYON_POINT +10), (int) (point.Y + RAYON_POINT + 10));
+        this.graphics.drawString(nomVille, (int) (point.X + offsetX), (int) (point.Y + offsetY));
         this.afficherEtDiposer();
     }
 
