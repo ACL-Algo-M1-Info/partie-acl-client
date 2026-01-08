@@ -35,6 +35,24 @@ public class Vecteur2D {
         Y = 0;
     }
 
+    public static Vecteur2D moyenneVecteurs(Vecteur2D...vecteurs)
+    {
+
+        Vecteur2D res = new Vecteur2D();
+
+        for(int i = 0; i < vecteurs.length; i++)
+        {
+            res.X += vecteurs[i].X;
+            res.Y += vecteurs[i].Y;
+        }
+
+        res.X = res.X / vecteurs.length;
+        res.Y = res.Y / vecteurs.length;
+
+        return res;
+
+    }
+
     /**
      * toString
      * @return Représentation sous la forme (X, Y)

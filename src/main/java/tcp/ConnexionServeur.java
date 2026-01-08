@@ -16,37 +16,57 @@ import java.util.HashMap;
 
 public class ConnexionServeur extends Thread
 {
+
 	// CONSTANTES
 
+	/** Temps définit pour le time out */
 	public final static double TIMEOUT_MS = 10_000;
 
 	// SINGLETON
 
+	/** Instance de la classe pour le singleton */
 	private static ConnexionServeur instance;
 
 	// VARIABLES
 
+	/** Socket de connexion */
 	public Socket socket;
 
+	/** Permet de lire les données reçues par la socket */
 	BufferedReader in;
 
+	/** Permet d'envoyer des données dans la socket */
 	PrintStream out;
 
 	/** ID de conversation, 0 implique erreur */
     private int idConversation = 1;
 
+	/** Hashmap qui permet de numéroter les interactions avec le serveur */
     private final HashMap<Integer, ReponseSocket> map = new HashMap<>();
 
 	// METHODES DU SINGLETON
 
-	public static void initialiser(String adresseServeur, int adressePort) throws IOException {
+	/**
+	 * Initialise le singleton avec des valeurs données
+	 * @param adresseServeur l'adresse du serveur
+	 * @param adressePort l'adresse du port
+	 * @throws IOException si la création de la socket se passe mal
+	 */
+	public static void initialiser(String adresseServeur, int adressePort) throws IOException
+	{
 		if(instance != null)
 		{
 			return;
 		}
+
 		instance = new ConnexionServeur(adresseServeur, adressePort);
+
 	}
 
+	/**
+	 * Récupère l'instance de connexion au serveur
+	 * @return l'instance de la connexion au serveur
+	 */
 	public static ConnexionServeur getInstance()
 	{
 		if (instance == null)
@@ -113,11 +133,17 @@ public class ConnexionServeur extends Thread
 		{ /* */ }
 	}
 
+	/**
+	 * Démarre le thread du serveur
+	 */
 	public void demarrer()
 	{
 		start();
 	}
 
+	/**
+	 * Arrête le thread du serveur
+	 */
 	public void arreter()
 	{
 		try
@@ -135,11 +161,22 @@ public class ConnexionServeur extends Thread
 		instance = null;
 	}
 
+	/**
+	 * Envoie une requête au serveur
+	 * @param sendableObject l'objet que l'on veut envoyer au serveur
+	 * @return la réponse du serveur
+	 */
     public ReponseSocket envoyer(SendableObject sendableObject)
     {
         return envoyer(sendableObject, TIMEOUT_MS);
     }
 
+	/**
+	 * Envoie une reqûete au serveur
+	 * @param sendableObject l'objet que l'on veut envoyer au serveur
+	 * @param timeoutMS le temps avant de considérer que le serveur ne réponde pas
+	 * @return la réponse du serveur
+	 */
 	public ReponseSocket envoyer(SendableObject sendableObject, double timeoutMS)
 	{
 		try

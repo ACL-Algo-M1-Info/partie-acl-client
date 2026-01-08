@@ -19,6 +19,7 @@ public class ParseurCSV implements Parseur
 
     // VARIABLES
 
+    /** Separateur de chaque colonne */
     private final char separateur;
 
 

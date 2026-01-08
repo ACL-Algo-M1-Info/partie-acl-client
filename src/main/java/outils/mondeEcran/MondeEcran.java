@@ -3,24 +3,31 @@
 package outils.mondeEcran;
 
 // IMPORTS
+
 import fenetre.Fenetre;
 import math.Vecteur2D;
 import outils.mondeEcran.obtentionCoordonnee.ObtentionCoordonnee;
-
 
 import java.util.ArrayList;
 
 // CLASSE
 
+/**
+ * Calcul les coordonnées monde écran
+ * @param <T> l'objet dont on veut calculer les coordonnées
+ */
 public class MondeEcran<T>
 {
 
     // VARIABLES
 
+    /** Obtenteur des coordonnées de l'objet */
     public ObtentionCoordonnee<T> obtenteur;
 
+    /** Coordonnées minimum de la fenêtre  */
     public Vecteur2D minFenetre;
 
+    /** Coordonnées maximum de la fenêtre */
     public Vecteur2D maxFenetre;
 
     /** Contient les valeurs du x min et du y min des points */
@@ -29,15 +36,24 @@ public class MondeEcran<T>
     /** Contient les valeurs du x max et du y max des points */
     public Vecteur2D max;
 
+    /** Coefficient lambda pour le monde écran */
     double lambda;
 
+    /** Coordonnées epsilon pour le monde écran */
     Vecteur2D epsilon;
 
+    /** Coordonnées de l'offset pour le monde écran */
     Vecteur2D offset;
 
 
     // CONSTRUCTEUR
 
+    /**
+     * Construit tout les coefficients et les vecteurs pour le monde écran à partir d'une fenêtre donnée
+     * @param obtenteur l'obtenteur des coordonnées
+     * @param fenetre la fenêtre dans laquelle on va mettre du monde écran
+     * @param objets les objets que l'on veut mettre dans la fenêtre
+     */
     public MondeEcran(ObtentionCoordonnee obtenteur, Fenetre fenetre, ArrayList<T> objets)
     {
 
@@ -73,6 +89,10 @@ public class MondeEcran<T>
 
     // METHODES
 
+    /**
+     * Calcul les vecteurs nécessaires au monde écran d'une liste d'objet
+     * @param objets les objets que l'on veut passer en monde écran
+     */
     private void calculerVecteurs(ArrayList<T> objets)
     {
 
@@ -97,6 +117,11 @@ public class MondeEcran<T>
 
     }
 
+    /**
+     * Permet de donner les coordonnées monde écran d'un objet
+     * @param obj l'objet dont on veut donner les coordonnées monde écran
+     * @return les coordonnées monde écran de l'objet
+     */
     public Vecteur2D resoudreMondeEcran(T obj)
     {
         double xObj = this.obtenteur.getX(obj);
