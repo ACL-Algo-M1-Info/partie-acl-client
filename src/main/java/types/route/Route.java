@@ -40,6 +40,8 @@ public class Route
     {
         this.distance = distance;
         this.typeRoute = TypesRoute.fromCode(numType);
+        this.villeA = villeA;
+        this.villeB = villeB;
     }
 
 }

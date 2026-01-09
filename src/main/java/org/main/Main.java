@@ -220,28 +220,29 @@ public class Main
     {
         FenetreGraphe fenetre = new FenetreGraphe(10, 10, 700, 500, 20);
 
-
-
-
-        boolean fin = false;
+        boolean fin;
 
         do
         {
-            System.out.printf("Choisissez le camion à afficher : (entre 0 et " + (trajets.size()-1) + " )");
+            System.out.printf("Choisissez le camion à afficher (entre 0 et " + (trajets.size()-1) + " ) ou \"q\" pour quitter : ");
             String requete = lireLigne();
             fin = Objects.equals(requete, "q");
             if(!fin)
             {
                 try {
                     int i = Integer.parseInt(requete);
-                    if(i < trajets.size())
+                    if(i < trajets.size() && i >= 0)
                     {
                         caulculMondeEcranEtAffichage(trajets.get(i), fenetre);
+                    }
+                    else
+                    {
+                        System.out.println("Ce n'est pas un camion valide !");
                     }
                 }
                 catch (NumberFormatException n)
                 {
-
+                    System.out.println("Ce n'est pas un nombre valide !");
                 }
             }
         } while(!fin);
@@ -250,13 +251,7 @@ public class Main
 
     public static void caulculMondeEcranEtAffichage(TrajetCamion trajet, FenetreGraphe fenetre)
     {
-
-        /*
-        Graphics graphics = fenetre.graphics;
-        graphics.setColor(fenetre.frame.getBackground());
-        graphics.fillRect(0, 0, fenetre.frame.getWidth(), fenetre.frame.getHeight());
-        */
-
+        // On supprime l'ancien affichage pour préparer le nouveau
         fenetre.frame.repaint();
 
         MondeEcran<Ville> mondeEcran = new MondeEcran<>(new ObtentionCoordonnesVille(), fenetre, trajet.villesParcourues);
