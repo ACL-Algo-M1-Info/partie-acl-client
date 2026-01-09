@@ -124,7 +124,6 @@ public class ConnexionServeur extends Thread
 			e.printStackTrace();
 		}
 
-		System.err.println("Socket fermé prématurément");
 		try
 		{
 			socket.close();

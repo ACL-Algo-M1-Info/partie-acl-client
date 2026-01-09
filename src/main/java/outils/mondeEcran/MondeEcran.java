@@ -95,6 +95,8 @@ public class MondeEcran<T>
      */
     private void calculerVecteurs(ArrayList<T> objets)
     {
+        if (objets.isEmpty())
+            throw new IllegalArgumentException("Impossible de calculer monde écran sans référentiel");
 
         this.min = new Vecteur2D(this.obtenteur.getX(objets.getFirst()), this.obtenteur.getY(objets.getFirst()));
         this.max = new Vecteur2D(this.min);
