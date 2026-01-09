@@ -5,6 +5,7 @@ package fenetre;
 // IMPORTS
 
 import math.Vecteur2D;
+import types.route.Route;
 import types.route.typesRoute.TypesRoute;
 import types.ville.Ville;
 
@@ -21,17 +22,6 @@ public class FenetreGraphe extends Fenetre
     public final static int RAYON_POINT = 4;
 
     public final static int DIAMETRE_POINT = RAYON_POINT * 2;
-
-    public final static HashMap<TypesRoute, Color> couleurs = new HashMap<>(){{
-        put(TypesRoute.AUTOROUTE, Color.black);
-        put(TypesRoute.AUTRE, Color.GRAY);
-        put(TypesRoute.ROUTE_EUROPEENNE, Color.BLUE);
-        put(TypesRoute.COMMUNALE, Color.GREEN);
-        put(TypesRoute.DEPARTEMENTALE, Color.ORANGE);
-        put(TypesRoute.NATIONALE, Color.RED);
-        put(TypesRoute.VOIE_RAPIDE, Color.DARK_GRAY);
-    }};
-
 
     // CONSTRUCTEUR
 
@@ -62,6 +52,7 @@ public class FenetreGraphe extends Fenetre
     {
 
         this.graphics = this.strategy.getDrawGraphics();
+        System.out.println("dessiner arête : " + couleur);
         this.graphics.setColor(couleur);
         this.graphics.drawLine((int)point1.X, (int)point1.Y, (int)point2.X, (int)point2.Y);
 
@@ -69,10 +60,10 @@ public class FenetreGraphe extends Fenetre
 
     }
 
-    public void dessinerVille(Vecteur2D point, String nomVille)
+    public void dessinerVille(Vecteur2D point, Ville ville)
     {
         dessinerSommet(point);
-        afficherNomVille(point, nomVille);
+        afficherNomVille(point, ville.nom);
     }
 
     public void afficherNomVille(Vecteur2D point, String nomVille)
@@ -97,9 +88,10 @@ public class FenetreGraphe extends Fenetre
         this.afficherEtDiposer();
     }
 
-    public void dessinerRoute(Vecteur2D point1, Vecteur2D point2, TypesRoute route, double distance)
+    public void dessinerRoute(Vecteur2D point1, Vecteur2D point2, Route route, double distance)
     {
-        dessinerArete(point1, point2, couleurs.get(route));
+        System.out.println("dessinerRoute : " + route.typeRoute.getCouleur());
+        dessinerArete(point1, point2, route.typeRoute.getCouleur());
         afficherDistance(point1, point2, distance);
     }
 

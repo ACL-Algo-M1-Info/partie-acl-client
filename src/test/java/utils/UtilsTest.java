@@ -1,6 +1,7 @@
 package utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class UtilsTest
 
         try
         {
-            ArrayList<ArrayList<Integer>> test = Utils.jsonVersT(json);
+            ArrayList<ArrayList<Integer>> test = Utils.jsonVersT(json, new TypeReference<ArrayList<ArrayList<Integer>>>() {});
 
             System.out.println("[");
             for(ArrayList<Integer> i: test)
@@ -25,7 +26,7 @@ public class UtilsTest
                 System.out.print("[ ");
                 for(Integer j: i)
                 {
-                    System.out.print(String.valueOf(j) + " ");
+                    System.out.print(j + " ");
                 }
                 System.out.println("]");
             }

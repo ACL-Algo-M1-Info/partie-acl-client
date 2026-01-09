@@ -4,6 +4,7 @@ package types.route;
 
 // IMPORTS
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import types.route.typesRoute.TypesRoute;
 
@@ -14,10 +15,8 @@ public class Route
 
     // VARIABLES
 
-    @JsonProperty("distance")
     public double distance;
 
-    @JsonProperty("type")
     public TypesRoute typeRoute;
 
     // CONSTRUCTEUR
@@ -30,6 +29,13 @@ public class Route
         this.distance = distance;
         this.typeRoute = typeRoute;
 
+    }
+
+    @JsonCreator
+    public Route(@JsonProperty("distance") double distance, @JsonProperty("type") int numType)
+    {
+        this.distance = distance;
+        this.typeRoute = TypesRoute.fromCode(numType);
     }
 
 }

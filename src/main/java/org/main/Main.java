@@ -203,7 +203,7 @@ public class Main
             System.out.print("[ ");
             for(Integer j: i)
             {
-                System.out.print(String.valueOf(j) + " ");
+                System.out.print(j + " ");
             }
             System.out.println("]");
         }
@@ -235,7 +235,7 @@ public class Main
             for(Ville ville: trajet.villesParcourues)
             {
                 Vecteur2D vecteur = mondeEcran.resoudreMondeEcran(ville);
-                fenetre.dessinerVille(vecteur, ville.nom);
+                fenetre.dessinerVille(vecteur, ville);
                 points.add(vecteur);
             }
 
@@ -254,7 +254,7 @@ public class Main
                 Vecteur2D pointB = points.get(indiceVille1);
 
                 Route routeActuelle = trajet.routesParcourues.get(indiceVille0);
-                fenetre.dessinerRoute(pointA, pointB, routeActuelle.typeRoute, routeActuelle.distance);
+                fenetre.dessinerRoute(pointA, pointB, routeActuelle, routeActuelle.distance);
             }
 
         }
