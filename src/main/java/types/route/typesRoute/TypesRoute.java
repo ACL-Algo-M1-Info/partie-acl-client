@@ -12,7 +12,7 @@ public enum TypesRoute
     DEPARTEMENTALE(752, Color.ORANGE),
     NATIONALE(4, Color.RED),
     ROUTE_EUROPEENNE(336, Color.BLUE),
-    VOIE_RAPIDE(114, Color.DARK_GRAY);
+    VOIE_RAPIDE(114, Color.MAGENTA);
 
 
     int code;

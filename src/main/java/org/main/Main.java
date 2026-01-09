@@ -18,7 +18,6 @@ import types.typesCode.CodeStatutReponse;
 import types.ville.Ville;
 import utils.Utils;
 
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -224,7 +223,7 @@ public class Main
 
         do
         {
-            System.out.printf("Choisissez le camion à afficher (entre 0 et " + (trajets.size()-1) + " ) ou \"q\" pour quitter : ");
+            System.out.print("Choisissez le camion à afficher (entre 0 et " + (trajets.size()-1) + " ) ou \"q\" pour quitter : ");
             String requete = lireLigne();
             fin = Objects.equals(requete, "q");
             if(!fin)
@@ -233,7 +232,7 @@ public class Main
                     int i = Integer.parseInt(requete);
                     if(i < trajets.size() && i >= 0)
                     {
-                        caulculMondeEcranEtAffichage(trajets.get(i), fenetre);
+                        caulculMondeEcranEtAffichage(trajets.get(i), fenetre, i);
                     }
                     else
                     {
@@ -247,13 +246,13 @@ public class Main
             }
         } while(!fin);
 
+        fenetre.fermer();
     }
 
-    public static void caulculMondeEcranEtAffichage(TrajetCamion trajet, FenetreGraphe fenetre)
+    public static void caulculMondeEcranEtAffichage(TrajetCamion trajet, FenetreGraphe fenetre, int id)
     {
         // On supprime l'ancien affichage pour préparer le nouveau
-        fenetre.frame.repaint();
-
+        fenetre.effacer();
         MondeEcran<Ville> mondeEcran = new MondeEcran<>(new ObtentionCoordonnesVille(), fenetre, trajet.villesParcourues);
 
         // Choix de la couleur
@@ -274,11 +273,9 @@ public class Main
             Vecteur2D pointA = points.get(route.villeA);
             Vecteur2D pointB = points.get(route.villeB);
 
-
             fenetre.dessinerRoute(pointA, pointB, route, route.distance);
         }
 
+        fenetre.afficherDistanceTotale(trajet.distanceTotale, id);
     }
-
-
 }

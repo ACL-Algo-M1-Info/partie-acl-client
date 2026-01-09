@@ -102,6 +102,16 @@ public class FenetreGraphe extends Fenetre
         this.graphics = this.strategy.getDrawGraphics();
         this.graphics.setColor(Color.black);
         this.graphics.drawString(String.valueOf((int)distance), (int)moyenne.X + 10, (int)moyenne.Y + 10);
+        this.afficherEtDiposer();
+    }
 
+    public void afficherDistanceTotale(double distanceTotale, int idCamion)
+    {
+        this.graphics = this.strategy.getDrawGraphics();
+        this.graphics.setColor(Color.BLACK);
+        String contenu = "Distance totale : " + (int)distanceTotale + " pour le camion " + idCamion;
+
+        this.graphics.drawString(contenu, 30, (int)obtenirPointMinimal().Y - 5);
+        this.afficherEtDiposer();
     }
 }

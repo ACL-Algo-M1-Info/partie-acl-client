@@ -92,6 +92,25 @@ public abstract class Fenetre
     }
 
     /**
+     * Ferme la fenêtre
+     */
+    public void fermer()
+    {
+        this.frame.dispose();
+    }
+
+    /**
+     * Efface le contenu de la fenêtre
+     */
+    public void effacer()
+    {
+        this.graphics = this.strategy.getDrawGraphics();
+        this.graphics.setColor(this.frame.getBackground());
+        this.graphics.fillRect(0, 0, this.frame.getWidth(), this.frame.getHeight());
+        this.afficherEtDiposer();
+    }
+
+    /**
      * Permet d'afficher les modifications effectuées sur la fenêtre
      */
     public void afficherEtDiposer()
