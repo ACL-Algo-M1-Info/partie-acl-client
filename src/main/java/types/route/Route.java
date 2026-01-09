@@ -19,6 +19,10 @@ public class Route
 
     public TypesRoute typeRoute;
 
+    public String villeA;
+
+    public String villeB;
+
     // CONSTRUCTEUR
 
     public Route() { }
@@ -32,7 +36,7 @@ public class Route
     }
 
     @JsonCreator
-    public Route(@JsonProperty("distance") double distance, @JsonProperty("type") int numType)
+    public Route(@JsonProperty("distance") double distance, @JsonProperty("type") int numType, @JsonProperty("villeA") String villeA, @JsonProperty("villeB") String villeB)
     {
         this.distance = distance;
         this.typeRoute = TypesRoute.fromCode(numType);

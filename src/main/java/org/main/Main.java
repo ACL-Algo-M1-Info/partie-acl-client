@@ -18,13 +18,11 @@ import types.typesCode.CodeStatutReponse;
 import types.ville.Ville;
 import utils.Utils;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Main
 {
@@ -224,41 +222,68 @@ public class Main
 
 
 
-        MondeEcran<Ville> mondeEcran = new MondeEcran<>(new ObtentionCoordonnesVille(), fenetre, TrajetCamion.obtenirVillesParcourues(trajets));
 
-        for(TrajetCamion trajet: trajets)
+        boolean fin = false;
+
+        do
         {
-            // Choix de la couleur
-
-            ArrayList<Vecteur2D> points = new ArrayList<>();
-
-            for(Ville ville: trajet.villesParcourues)
+            System.out.printf("Choisissez le camion à afficher : (entre 0 et " + (trajets.size()-1) + " )");
+            String requete = lireLigne();
+            fin = Objects.equals(requete, "q");
+            if(!fin)
             {
-                Vecteur2D vecteur = mondeEcran.resoudreMondeEcran(ville);
-                fenetre.dessinerVille(vecteur, ville);
-                points.add(vecteur);
+                try {
+                    int i = Integer.parseInt(requete);
+                    if(i < trajets.size())
+                    {
+                        caulculMondeEcranEtAffichage(trajets.get(i), fenetre);
+                    }
+                }
+                catch (NumberFormatException n)
+                {
+
+                }
             }
+        } while(!fin);
 
-            int indiceVille0 = 0;
-            int indiceVille1 = 1;
+    }
 
-            for(int i = 0; i < trajet.villesParcourues.size(); i++)
-            {
-                indiceVille0 = i;
-                indiceVille1 = i+1;
+    public static void caulculMondeEcranEtAffichage(TrajetCamion trajet, FenetreGraphe fenetre)
+    {
 
-                if(indiceVille1 >= trajet.villesParcourues.size())
-                    indiceVille1 = 0;
+        /*
+        Graphics graphics = fenetre.graphics;
+        graphics.setColor(fenetre.frame.getBackground());
+        graphics.fillRect(0, 0, fenetre.frame.getWidth(), fenetre.frame.getHeight());
+        */
 
-                Vecteur2D pointA = points.get(indiceVille0);
-                Vecteur2D pointB = points.get(indiceVille1);
+        fenetre.frame.repaint();
 
-                Route routeActuelle = trajet.routesParcourues.get(indiceVille0);
-                fenetre.dessinerRoute(pointA, pointB, routeActuelle, routeActuelle.distance);
-            }
+        MondeEcran<Ville> mondeEcran = new MondeEcran<>(new ObtentionCoordonnesVille(), fenetre, trajet.villesParcourues);
 
+        // Choix de la couleur
+
+        //ArrayList<Vecteur2D> points = new ArrayList<>();
+        HashMap<String, Vecteur2D> points = new HashMap<>();
+
+        for(Ville ville: trajet.villesParcourues)
+        {
+            Vecteur2D vecteur = mondeEcran.resoudreMondeEcran(ville);
+            fenetre.dessinerVille(vecteur, ville);
+            points.put(ville.nom, vecteur);
+        }
+
+
+        for(Route route: trajet.routesParcourues)
+        {
+            Vecteur2D pointA = points.get(route.villeA);
+            Vecteur2D pointB = points.get(route.villeB);
+
+
+            fenetre.dessinerRoute(pointA, pointB, route, route.distance);
         }
 
     }
+
 
 }
