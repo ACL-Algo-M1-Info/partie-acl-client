@@ -153,7 +153,8 @@ public class MondeEcran<T>
      */
     private static double lambdaUnit(Vecteur2D x, Vecteur2D xPrimes)
     {
-        return Math.abs(xPrimes.Y - xPrimes.X) / Math.abs(x.Y - x.X);
+        // On fixe 10e-8 comme valeur pour rendre ça compatible avec une seule coord.
+        return Math.abs(xPrimes.Y - xPrimes.X) / Math.max(10e-8, Math.abs(x.Y - x.X));
     }
 
     /**
@@ -167,8 +168,8 @@ public class MondeEcran<T>
     public static double lambda(Vecteur2D v1, Vecteur2D v2, Vecteur2D vp1, Vecteur2D vp2)
     {
         return Math.min(
-            lambdaUnit(new Vecteur2D(v1.X, v2.X), new Vecteur2D(vp1.X, vp2.X) ),
-                lambdaUnit(new Vecteur2D(v1.Y, v2.Y), new Vecteur2D(vp1.Y, vp2.Y))
+            lambdaUnit(new Vecteur2D(v1.X, v2.X), new Vecteur2D(vp1.X, vp2.X)),
+            lambdaUnit(new Vecteur2D(v1.Y, v2.Y), new Vecteur2D(vp1.Y, vp2.Y))
         );
     }
 
