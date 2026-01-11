@@ -62,9 +62,7 @@ public class MondeEcran<T>
         this.minFenetre = fenetre.obtenirPointMinimal();
         this.maxFenetre = fenetre.obtenirPointMaximal();
 
-
         // Initialisation des vecteurs min et max
-
         calculerVecteurs(objets);
 
         lambda = MondeEcran.lambda(this.min, this.max, this.minFenetre, this.maxFenetre);
@@ -103,7 +101,6 @@ public class MondeEcran<T>
 
         for(int i = 1; i < objets.size(); i++)
         {
-
             T obj = objets.get(i);
 
             double xObj = obtenteur.getX(obj);
@@ -114,7 +111,6 @@ public class MondeEcran<T>
 
             this.max.X = Math.max(this.max.X, xObj);
             this.max.Y = Math.max(this.max.Y, yObj);
-
         }
 
     }

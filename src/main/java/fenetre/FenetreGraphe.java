@@ -52,7 +52,6 @@ public class FenetreGraphe extends Fenetre
     {
 
         this.graphics = this.strategy.getDrawGraphics();
-        System.out.println("dessiner arête : " + couleur);
         this.graphics.setColor(couleur);
         this.graphics.drawLine((int)point1.X, (int)point1.Y, (int)point2.X, (int)point2.Y);
 
@@ -90,7 +89,6 @@ public class FenetreGraphe extends Fenetre
 
     public void dessinerRoute(Vecteur2D point1, Vecteur2D point2, Route route, double distance)
     {
-        System.out.println("dessinerRoute : " + route.typeRoute.getCouleur());
         dessinerArete(point1, point2, route.typeRoute.getCouleur());
         afficherDistance(point1, point2, distance);
     }
@@ -105,13 +103,17 @@ public class FenetreGraphe extends Fenetre
         this.afficherEtDiposer();
     }
 
-    public void afficherDistanceTotale(double distanceTotale, int idCamion)
+    public void afficherResume(String texte)
     {
         this.graphics = this.strategy.getDrawGraphics();
         this.graphics.setColor(Color.BLACK);
-        String contenu = "Distance totale : " + (int)distanceTotale + " pour le camion " + idCamion;
-
-        this.graphics.drawString(contenu, 30, (int)obtenirPointMinimal().Y - 5);
+        this.graphics.drawString(texte, 30, (int)obtenirPointMinimal().Y - 5);
         this.afficherEtDiposer();
+    }
+
+    public void afficherDistanceTotale(double distanceTotale, int idCamion)
+    {
+        String contenu = "Distance totale : " + (int)distanceTotale + " pour le camion " + idCamion;
+        afficherResume(contenu);
     }
 }

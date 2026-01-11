@@ -230,14 +230,15 @@ public class Main
             {
                 try {
                     int i = Integer.parseInt(requete);
-                    if(i < trajets.size() && i >= 0)
-                    {
-                        caulculMondeEcranEtAffichage(trajets.get(i), fenetre, i);
-                    }
-                    else
+
+                    // Indice choisi incorrect.
+                    if(i >= trajets.size() || i < 0)
                     {
                         System.out.println("Ce n'est pas un camion valide !");
+                        continue;
                     }
+
+                    calculMondeEcranEtAffichage(trajets.get(i), fenetre, i);
                 }
                 catch (NumberFormatException n)
                 {
@@ -249,33 +250,46 @@ public class Main
         fenetre.fermer();
     }
 
-    public static void caulculMondeEcranEtAffichage(TrajetCamion trajet, FenetreGraphe fenetre, int id)
+    public static void calculMondeEcranEtAffichage(TrajetCamion trajet, FenetreGraphe fenetre, int id)
     {
         // On supprime l'ancien affichage pour préparer le nouveau
         fenetre.effacer();
-        MondeEcran<Ville> mondeEcran = new MondeEcran<>(new ObtentionCoordonnesVille(), fenetre, trajet.villesParcourues);
 
-        // Choix de la couleur
+        // On affiche toutes les villes et les segments si le trajet n'est pas vide (aka au moins une ville).
 
-        //ArrayList<Vecteur2D> points = new ArrayList<>();
-        HashMap<String, Vecteur2D> points = new HashMap<>();
-
-        for(Ville ville: trajet.villesParcourues)
+        if (!trajet.villesParcourues.isEmpty())
         {
-            Vecteur2D vecteur = mondeEcran.resoudreMondeEcran(ville);
-            fenetre.dessinerVille(vecteur, ville);
-            points.put(ville.nom, vecteur);
+            MondeEcran<Ville> mondeEcran = new MondeEcran<>(new ObtentionCoordonnesVille(), fenetre, trajet.villesParcourues);
+
+            //ArrayList<Vecteur2D> points = new ArrayList<>();
+            HashMap<String, Vecteur2D> points = new HashMap<>();
+
+            for (Ville ville : trajet.villesParcourues)
+            {
+                Vecteur2D vecteur = mondeEcran.resoudreMondeEcran(ville);
+                fenetre.dessinerVille(vecteur, ville);
+                points.put(ville.nom, vecteur);
+
+                System.out.println("Parcours de la ville " + ville.nom);
+            }
+
+
+            for (Route route : trajet.routesParcourues)
+            {
+                Vecteur2D pointA = points.get(route.villeA);
+                Vecteur2D pointB = points.get(route.villeB);
+
+                fenetre.dessinerRoute(pointA, pointB, route, route.distance);
+
+                System.out.println("Liaison entre les villes " + route.villeA + " et " + route.villeB + " pour une distance de " + (int)route.distance);
+            }
+
+            fenetre.afficherDistanceTotale(trajet.distanceTotale, id);
         }
-
-
-        for(Route route: trajet.routesParcourues)
+        else
         {
-            Vecteur2D pointA = points.get(route.villeA);
-            Vecteur2D pointB = points.get(route.villeB);
-
-            fenetre.dessinerRoute(pointA, pointB, route, route.distance);
+            System.out.println("Aucune ville à parcourir !");
+            fenetre.afficherResume("Le camion " + id + " n'a aucune ville à parcourir");
         }
-
-        fenetre.afficherDistanceTotale(trajet.distanceTotale, id);
     }
 }
