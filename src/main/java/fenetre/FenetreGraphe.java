@@ -107,7 +107,7 @@ public class FenetreGraphe extends Fenetre
     {
         this.graphics = this.strategy.getDrawGraphics();
         this.graphics.setColor(Color.BLACK);
-        this.graphics.drawString(texte, 30, (int)obtenirPointMinimal().Y - 5);
+        this.graphics.drawString(texte, 30, (int)obtenirPointMinimal().Y + 10);
         this.afficherEtDiposer();
     }
 
